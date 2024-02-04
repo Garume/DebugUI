@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine.WSA;
 
 namespace DebugUI
 {
@@ -9,7 +11,18 @@ namespace DebugUI
             where TObject : class
         {
             var source = new EveryValueChanged<TValue, TObject>(target, propertySelector);
-            UpdateDispatcher.Register(source);
+#if UNITY_EDITOR
+            if (EditorApplication.isPlaying)
+            {
+                UpdateDispatcher.Register(source);
+            }
+            else
+            {
+                EditorUpdateDispatcher.Register(source);
+            }
+#else
+                updateDispatcher.Register(source);
+#endif
             return source;
         }
 

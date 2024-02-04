@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace DebugUI
@@ -25,6 +26,32 @@ namespace DebugUI
         void Update()
         {
             updateRunner.Run();
+        }
+    }
+
+    internal sealed class EditorUpdateDispatcher
+    {
+        [InitializeOnLoadMethod]
+        static void Init()
+        {
+            if (instance != null) return;
+            instance = new EditorUpdateDispatcher();
+            
+            EditorApplication.update += Update;
+        }
+        
+        readonly UpdateRunner updateRunner = new(ex => Debug.LogException(ex));
+        
+        static EditorUpdateDispatcher instance;
+        
+        public static void Register(IUpdateRunnerItem item)
+        {
+            instance.updateRunner.Add(item);
+        }
+
+        static void Update()
+        {
+           instance.updateRunner.Run();
         }
     }
 }
