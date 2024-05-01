@@ -20,7 +20,7 @@ namespace DebugUI
                 EditorUpdateDispatcher.Register(source);
             }
 #else
-                updateDispatcher.Register(source);
+                UpdateDispatcher.Register(source);
 #endif
             return source;
         }
