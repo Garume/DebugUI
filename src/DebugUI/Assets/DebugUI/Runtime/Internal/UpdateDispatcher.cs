@@ -29,6 +29,7 @@ namespace DebugUI
         }
     }
 
+#if UNITY_EDITOR
     internal sealed class EditorUpdateDispatcher
     {
         [InitializeOnLoadMethod]
@@ -54,4 +55,5 @@ namespace DebugUI
            instance.updateRunner.Run();
         }
     }
+#endif
 }
